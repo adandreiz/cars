@@ -32,6 +32,7 @@ class Car
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Assert\NotBlank()]
+    #[Assert\GreaterThanOrEqual('-4 years')]
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     private ?\DateTimeInterface $buildDate = null;
 
