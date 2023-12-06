@@ -12,6 +12,8 @@ This is a monorepo containing:
 
 Copy `docker/.env.dist` and paste as `docker/.env`.
 
+Copy `api/.env.dist` and paste as `api/.env`.
+
 ### Run local environment
 
 Build local environment using Docker 
