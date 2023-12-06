@@ -1,6 +1,6 @@
-#Cars API
+# Cars API
 
-##Project structure
+## Project structure
 
 This is a monorepo containing:
 
@@ -8,11 +8,11 @@ This is a monorepo containing:
 - A Symfony 6.4 API `api/`
 - A Docker environment to build and run the API `docker/`
 
-##Environment setup
+## Environment setup
 
 Copy `docker\.env.dist` and past as `docker\.env`.
 
-##Run local environment
+## Run local environment
 
 Build local environment using Docker 
 
@@ -36,9 +36,9 @@ Run migrations and load initial colours using fixtures
 
 `php bin/console doctrine:fixtures:load`
 
-##Testing
+## Testing
 
-###Create db and load test Fixtures
+### Create db and load test Fixtures
 
 `php bin/console --env=test doctrine:database:create`
 
@@ -46,13 +46,13 @@ Run migrations and load initial colours using fixtures
 
 `php bin/console --env=test doctrine:fixtures:load`
 
-###Run tests with coverage
+### Run tests with coverage
 
 `php bin/phpunit --coverage-html coverage`
 
 The command will run the tests and create a folder inside `api/` called `coverage` containing a nice html site showing lines of codes covered by tests.
 
-##Room for improvement
+## Improvements
 
 Creating models for `make` with a relation to `car` and a model for `model` with a relation to `make` will improve the design and make validation more solid.
 
