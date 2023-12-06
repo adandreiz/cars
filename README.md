@@ -10,9 +10,9 @@ This is a monorepo containing:
 
 ## Environment setup
 
-Copy `docker\.env.dist` and past as `docker\.env`.
+Copy `docker\.env.dist` and paste as `docker\.env`.
 
-## Run local environment
+### Run local environment
 
 Build local environment using Docker 
 
@@ -37,6 +37,8 @@ Run migrations and load initial colours using fixtures
 `php bin/console doctrine:fixtures:load`
 
 ## Testing
+
+I created a suite of test using DAMA doctrine test bundle, this library allows you to test the code and the database without committing transactions during testing. 
 
 ### Create db and load test Fixtures
 
