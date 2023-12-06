@@ -10,7 +10,7 @@ This is a monorepo containing:
 
 ## Environment setup
 
-Copy `docker\.env.dist` and paste as `docker\.env`.
+Copy `docker/.env.dist` and paste as `docker/.env`.
 
 ### Run local environment
 
@@ -42,7 +42,7 @@ I created a suite of test using DAMA doctrine test bundle, this library allows y
 
 ### Create db and load test Fixtures
 
-Copy `api\phpunit.xml.dist` and paste as `api\phpunit.xml`.
+Copy `api/phpunit.xml.dist` and paste as `api/phpunit.xml`.
 
 `php bin/console --env=test doctrine:database:create`
 
