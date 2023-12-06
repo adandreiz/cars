@@ -6,6 +6,10 @@ use App\Entity\Car;
 use App\Entity\Colour;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class CarService
 {
@@ -23,10 +27,16 @@ class CarService
 
     public function createCar(\stdClass $carData): Car
     {
-        // Validate all required keys are set
-        $this->validationService->validatePayload(['make','model','colourId','buildDate'], $carData);
+        $normalizer = new ObjectNormalizer(null, null, null, new ReflectionExtractor());
+        $serializer = new Serializer([new DateTimeNormalizer(), $normalizer]);
+
+        $car = $serializer->denormalize(
+            $carData,
+            Car::class
+        );
 
         // Wrap get colour in try and catch to return 422 instead of 404
+        $this->validationService->validatePayload(['colourId'], $carData);
         try {
             $colourRepository = $this->doctrine->getRepository(Colour::class);
             $colour = $colourRepository->findOrFail($carData->colourId);
@@ -37,13 +47,8 @@ class CarService
             );
             throw new ServiceException($exceptionData);
         }
+        $car->setColour($colour);
 
-        // @TODO Use and configure and use JMS deserializer
-        $car = new Car();
-        $car->setMake($carData->make)
-            ->setModel($carData->model)
-            ->setBuildDate(new \DateTimeImmutable($carData->buildDate))
-            ->setColour($colour);
         $this->validationService->validateEntity($car);
 
         $em = $this->doctrine->getManager();
