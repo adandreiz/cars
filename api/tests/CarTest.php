@@ -16,7 +16,7 @@ class CarTest extends WebTestCase
             'colourId' => 2,
             'buildDate' => '2022/02/12'
         ]));
-        $this->assertResponseStatusCodeSame(400);
+        $this->assertResponseStatusCodeSame(422);
 
         // Test can't create car without model
         $client->xmlHttpRequest('POST', '/cars', [], [], [], json_encode([
@@ -24,7 +24,7 @@ class CarTest extends WebTestCase
             'colourId' => 2,
             'buildDate' => '2022/02/12'
         ]));
-        $this->assertResponseStatusCodeSame(400);
+        $this->assertResponseStatusCodeSame(422);
 
         // Test can't create car without colour
         $client->xmlHttpRequest('POST', '/cars', [], [], [], json_encode([
@@ -32,7 +32,7 @@ class CarTest extends WebTestCase
             'model' => 'Civic',
             'buildDate' => '2022/02/12'
         ]));
-        $this->assertResponseStatusCodeSame(400);
+        $this->assertResponseStatusCodeSame(422);
 
         // Test can't create car without buildDate
         $client->xmlHttpRequest('POST', '/cars', [], [], [], json_encode([
@@ -40,7 +40,7 @@ class CarTest extends WebTestCase
             'model' => 'Civic',
             'colourId' => 3
         ]));
-        $this->assertResponseStatusCodeSame(400);
+        $this->assertResponseStatusCodeSame(422);
 
         // Test can't create car which already exists
         $client->xmlHttpRequest('POST', '/cars', [], [], [], json_encode([

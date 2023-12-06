@@ -33,7 +33,7 @@ class ValidationService
         foreach ($keys as $key) {
             if (!isset($data->$key)) {
                 $exceptionData = new ServiceExceptionData(
-                    JsonResponse::HTTP_BAD_REQUEST,
+                    JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
                     sprintf('%s value is required', $key)
                 );
                 throw new ServiceException($exceptionData);
