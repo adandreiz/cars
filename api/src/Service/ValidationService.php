@@ -23,8 +23,8 @@ class ValidationService
     {
         $errors = $this->validator->validate($entity);
         if (count($errors) > 0) {
-            $exceptionData = new ServiceExceptionData(JsonResponse::HTTP_UNPROCESSABLE_ENTITY,  $errors);
-            throw new ServiceException($exceptionData);
+            $exceptionData = new ExceptionDataService(JsonResponse::HTTP_UNPROCESSABLE_ENTITY,  $errors);
+            throw new ExceptionService($exceptionData);
         }
     }
 
@@ -32,11 +32,11 @@ class ValidationService
     {
         foreach ($keys as $key) {
             if (!isset($data->$key)) {
-                $exceptionData = new ServiceExceptionData(
+                $exceptionData = new ExceptionDataService(
                     JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
                     sprintf('%s value is required', $key)
                 );
-                throw new ServiceException($exceptionData);
+                throw new ExceptionService($exceptionData);
             }
         }
     }

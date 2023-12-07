@@ -3,8 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Colour;
-use App\Service\ServiceException;
-use App\Service\ServiceExceptionData;
+use App\Service\ExceptionService;
+use App\Service\ExceptionDataService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,8 +28,8 @@ class ColourRepository extends ServiceEntityRepository
     {
         $colour = $this->find($id);
         if (!$colour) {
-            $exceptionData = new ServiceExceptionData(JsonResponse::HTTP_NOT_FOUND, 'Colour not found');
-            throw new ServiceException($exceptionData);
+            $exceptionData = new ExceptionDataService(JsonResponse::HTTP_NOT_FOUND, 'Colour not found');
+            throw new ExceptionService($exceptionData);
         }
         return $colour;
     }

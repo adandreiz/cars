@@ -40,12 +40,12 @@ class CarService
         try {
             $colourRepository = $this->doctrine->getRepository(Colour::class);
             $colour = $colourRepository->findOrFail($carData->colourId);
-        } catch (ServiceException $exceptionData) {
-            $exceptionData = new ServiceExceptionData(
+        } catch (ExceptionService $exceptionData) {
+            $exceptionData = new ExceptionDataService(
                 JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
                 $exceptionData->getMessage()
             );
-            throw new ServiceException($exceptionData);
+            throw new ExceptionService($exceptionData);
         }
         $car->setColour($colour);
 

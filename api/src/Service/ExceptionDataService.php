@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-class ServiceExceptionData
+class ExceptionDataService
 {
 
     public function __construct(protected int $statusCode, protected string $message)
