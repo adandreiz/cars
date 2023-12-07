@@ -34,8 +34,16 @@ class ValidationService
         }
     }
 
-    public function validatePayload(array $keys, \stdClass $data): void
+    public function validatePayload(array $keys,? \stdClass $data): void
     {
+        if (!$data) {
+            $exceptionData = new ExceptionDataService(
+                JsonResponse::HTTP_BAD_REQUEST,
+                'Invalid Json Request'
+            );
+            throw new ExceptionService($exceptionData);
+        }
+
         foreach ($keys as $key) {
             if (!isset($data->$key)) {
                 $exceptionData = new ExceptionDataService(

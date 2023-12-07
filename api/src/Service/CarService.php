@@ -27,13 +27,7 @@ class CarService
 
     public function createCar(?\stdClass $carData): Car
     {
-        if (!$carData) {
-            $exceptionData = new ExceptionDataService(
-                JsonResponse::HTTP_BAD_REQUEST,
-                'Invalid Json Request'
-            );
-            throw new ExceptionService($exceptionData);
-        }
+        $this->validationService->validatePayload(['colourId'], $carData);
 
         $normalizer = new ObjectNormalizer(null, null, null, new ReflectionExtractor());
         $serializer = new Serializer([new DateTimeNormalizer(), $normalizer]);
@@ -44,7 +38,6 @@ class CarService
         );
 
         // Wrap get colour in try and catch to return 422 instead of 404
-        $this->validationService->validatePayload(['colourId'], $carData);
         try {
             $colourRepository = $this->doctrine->getRepository(Colour::class);
             $colour = $colourRepository->findOrFail($carData->colourId);
