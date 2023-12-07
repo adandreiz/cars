@@ -23,7 +23,13 @@ class ValidationService
     {
         $errors = $this->validator->validate($entity);
         if (count($errors) > 0) {
-            $exceptionData = new ExceptionDataService(JsonResponse::HTTP_UNPROCESSABLE_ENTITY,  $errors);
+            preg_match_all('/Object\(App\\\\Entity\\\\(\w+)\)\.(\w+):\n\s+(.*?) \(/', $errors, $matches, PREG_SET_ORDER);
+            $msg = [];
+            foreach ($matches as $match) {
+                $msg[] = sprintf('%s: %s', $match[2], $match[3]);
+            }
+            $exceptionData = new ExceptionDataService(JsonResponse::HTTP_UNPROCESSABLE_ENTITY,  implode("\n",$msg));
+
             throw new ExceptionService($exceptionData);
         }
     }
