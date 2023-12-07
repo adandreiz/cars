@@ -25,8 +25,16 @@ class CarService
         $this->validationService = $validationService;
     }
 
-    public function createCar(\stdClass $carData): Car
+    public function createCar(?\stdClass $carData): Car
     {
+        if (!$carData) {
+            $exceptionData = new ExceptionDataService(
+                JsonResponse::HTTP_BAD_REQUEST,
+                'Invalid Json Request'
+            );
+            throw new ExceptionService($exceptionData);
+        }
+
         $normalizer = new ObjectNormalizer(null, null, null, new ReflectionExtractor());
         $serializer = new Serializer([new DateTimeNormalizer(), $normalizer]);
 

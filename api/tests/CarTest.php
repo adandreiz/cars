@@ -10,6 +10,14 @@ class CarTest extends WebTestCase
     {
         $client = static::createClient();
 
+        // Test body error request
+        $client->xmlHttpRequest('POST', '/cars', [], [], [],'{
+            "make": "Ford",
+            "model": "Focus",
+            "colourId": 4,
+            "buildDate": "2017/07/01",}');
+        $this->assertResponseStatusCodeSame(400);
+
         // Test can't create car without make
         $client->xmlHttpRequest('POST', '/cars', [], [], [], json_encode([
             'model' => 'Civic',
