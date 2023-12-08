@@ -14,14 +14,16 @@ class CarTest extends WebTestCase
         $client->xmlHttpRequest('POST', '/cars', [], [], [],'{
             "make": "Ford",
             "model": "Focus",
-            "colourId": 4,
+            "colour": {"id": 4},
             "buildDate": "2017/07/01",}');
-        $this->assertResponseStatusCodeSame(400);
+        $this->assertResponseStatusCodeSame(422);
 
         // Test can't create car without make
         $client->xmlHttpRequest('POST', '/cars', [], [], [], json_encode([
             'model' => 'Civic',
-            'colourId' => 2,
+            'colour' => [
+                'id' => 2
+            ],
             'buildDate' => '2022/02/12'
         ]));
         $this->assertResponseStatusCodeSame(422);
@@ -29,7 +31,9 @@ class CarTest extends WebTestCase
         // Test can't create car without model
         $client->xmlHttpRequest('POST', '/cars', [], [], [], json_encode([
             'make' => 'Honda',
-            'colourId' => 2,
+            'colour' => [
+                'id' => 2
+            ],
             'buildDate' => '2022/02/12'
         ]));
         $this->assertResponseStatusCodeSame(422);
@@ -46,7 +50,9 @@ class CarTest extends WebTestCase
         $client->xmlHttpRequest('POST', '/cars', [], [], [], json_encode([
             'make' => 'Honda',
             'model' => 'Civic',
-            'colourId' => 3
+            'colour' => [
+                'id' => 3
+            ],
         ]));
         $this->assertResponseStatusCodeSame(422);
 
@@ -55,7 +61,9 @@ class CarTest extends WebTestCase
             'make' => 'Peugeot',
             'model' => 'e-208',
             'buildDate' => '2023-05-01',
-            'colourId' => 4
+            'colour' => [
+                'id' => 4
+            ],
         ]));
         $this->assertResponseStatusCodeSame(422);
 
@@ -64,7 +72,9 @@ class CarTest extends WebTestCase
             'make' => 'Peugeot',
             'model' => 'e-208',
             'buildDate' => '2023-05-01',
-            'colourId' => 10
+            'colour' => [
+                'id' => 10
+            ],
         ]));
         $this->assertResponseStatusCodeSame(422);
 
@@ -73,7 +83,9 @@ class CarTest extends WebTestCase
             'make' => 'Peugeot',
             'model' => 'e-208',
             'buildDate' => '2019-05-01',
-            'colourId' => 1
+            'colour' => [
+                'id' => 1
+            ],
         ]));
         $this->assertResponseStatusCodeSame(422);
 
@@ -83,7 +95,9 @@ class CarTest extends WebTestCase
             'make' => 'Peugeot',
             'model' => 'e-208',
             'buildDate' => $today->format('Y/m/d'),
-            'colourId' => 1
+            'colour' => [
+                'id' => 1
+            ],
         ]));
         $this->assertResponseStatusCodeSame(201);
     }

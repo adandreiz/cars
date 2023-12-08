@@ -33,7 +33,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"make\": \"Ford\",\n    \"model\": \"Focus\",\n    \"colourId\": 2,\n    \"buildDate\": \"2021/07/15\"\n}\n",
+					"raw": "{\n    \"make\": \"Renaul\",\n    \"model\": \"Megane\",\n    \"colour\": {\n        \"id\": 2\n    },\n    \"buildDate\": \"2022/07/01\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -41,7 +41,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/cars",
+					"raw": "http://localhost:8080/cars?XDEBUG_SESSION_START=cars",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -49,6 +49,12 @@
 					"port": "8080",
 					"path": [
 						"cars"
+					],
+					"query": [
+						{
+							"key": "XDEBUG_SESSION_START",
+							"value": "cars"
+						}
 					]
 				}
 			},
@@ -83,7 +89,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/cars/2",
+					"raw": "http://localhost:8080/cars/8",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -91,7 +97,7 @@
 					"port": "8080",
 					"path": [
 						"cars",
-						"2"
+						"8"
 					]
 				}
 			},

@@ -26,8 +26,7 @@ class CarController extends AbstractController
     #[Route('/cars', name: 'add_cars', methods:'POST')]
     public function addCars(Request $request): JsonResponse
     {
-        $carData = json_decode($request->getContent());
-        $car = $this->carService->createCar($carData);
+        $car = $this->carService->createCar($request->getContent());
         return $this->json(['message' => sprintf('Car %s %s buit on %s colour %s created with id %s',
             $car->getMake(), $car->getModel(), $car->getBuildDate()->format('d-m-Y'), $car->getColour()->getName(), $car->getId())],
             JsonResponse::HTTP_CREATED);
