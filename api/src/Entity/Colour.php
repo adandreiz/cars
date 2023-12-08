@@ -4,10 +4,9 @@ namespace App\Entity;
 
 use App\Repository\ColourRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ColourRepository::class)]
-#[UniqueEntity('name')]
 class Colour
 {
     #[ORM\Id]
@@ -16,6 +15,7 @@ class Colour
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Unique()]
     private ?string $name = null;
 
     public function getId(): ?int
