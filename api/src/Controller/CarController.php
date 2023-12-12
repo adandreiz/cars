@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
+use App\Dto\CarDTO;
 use App\Repository\CarRepository;
 use App\Service\CarService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CarController extends AbstractController
@@ -24,9 +25,9 @@ class CarController extends AbstractController
     }
 
     #[Route('/cars', name: 'add_cars', methods:'POST')]
-    public function addCars(Request $request): JsonResponse
+    public function addCars(#[MapRequestPayload] CarDTO $car): JsonResponse
     {
-        $car = $this->carService->createCar($request->getContent());
+        $car = $this->carService->createCar($car);
         return $this->json(['message' => sprintf('Car %s %s buit on %s colour %s created with id %s',
             $car->getMake(), $car->getModel(), $car->getBuildDate()->format('d-m-Y'), $car->getColour()->getName(), $car->getId())],
             JsonResponse::HTTP_CREATED);

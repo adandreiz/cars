@@ -11,94 +11,79 @@ class CarTest extends WebTestCase
         $client = static::createClient();
 
         // Test body error request
-        $client->xmlHttpRequest('POST', '/cars', [], [], [],'{
-            "make": "Ford",
-            "model": "Focus",
-            "colour": {"id": 4},
-            "buildDate": "2017/07/01",}');
+        $client->jsonRequest('POST', '/cars',[
+            'model' => 'Civic',
+            'colourId' => 1,
+            'buildDate' => '2022-02-12']);
         $this->assertResponseStatusCodeSame(422);
 
         // Test can't create car without make
-        $client->xmlHttpRequest('POST', '/cars', [], [], [], json_encode([
+        $client->jsonRequest('POST', '/cars', [
             'model' => 'Civic',
-            'colour' => [
-                'id' => 2
-            ],
-            'buildDate' => '2022/02/12'
-        ]));
+            'colourId' => 1,
+            'buildDate' => '2022-02-12'
+        ]);
         $this->assertResponseStatusCodeSame(422);
 
         // Test can't create car without model
-        $client->xmlHttpRequest('POST', '/cars', [], [], [], json_encode([
+        $client->jsonRequest('POST', '/cars', [
             'make' => 'Honda',
-            'colour' => [
-                'id' => 2
-            ],
-            'buildDate' => '2022/02/12'
-        ]));
+            'colourId' => 1,
+            'buildDate' => '2022-02-12'
+        ]);
         $this->assertResponseStatusCodeSame(422);
 
         // Test can't create car without colour
-        $client->xmlHttpRequest('POST', '/cars', [], [], [], json_encode([
+        $client->jsonRequest('POST', '/cars', [
             'make' => 'Honda',
             'model' => 'Civic',
-            'buildDate' => '2022/02/12'
-        ]));
+            'buildDate' => '2022-02-12'
+        ]);
         $this->assertResponseStatusCodeSame(422);
 
         // Test can't create car without buildDate
-        $client->xmlHttpRequest('POST', '/cars', [], [], [], json_encode([
+        $client->jsonRequest('POST', '/cars', [
             'make' => 'Honda',
             'model' => 'Civic',
-            'colour' => [
-                'id' => 3
-            ],
-        ]));
+            'colourId' => 1
+        ]);
         $this->assertResponseStatusCodeSame(422);
 
         // Test can't create car which already exists
-        $client->xmlHttpRequest('POST', '/cars', [], [], [], json_encode([
+        $client->jsonRequest('POST', '/cars', [
             'make' => 'Peugeot',
             'model' => 'e-208',
             'buildDate' => '2023-05-01',
-            'colour' => [
-                'id' => 4
-            ],
-        ]));
+            'colourId' => 4,
+        ]);
         $this->assertResponseStatusCodeSame(422);
 
         // Test can't create car with invalid colour
-        $client->xmlHttpRequest('POST', '/cars', [], [], [], json_encode([
+        $client->jsonRequest('POST', '/cars', [
             'make' => 'Peugeot',
             'model' => 'e-208',
             'buildDate' => '2023-05-01',
-            'colour' => [
-                'id' => 10
-            ],
-        ]));
+            'colourId' => 13,
+        ]);
         $this->assertResponseStatusCodeSame(422);
 
         // Test can't create car older than 4 years
-        $client->xmlHttpRequest('POST', '/cars', [], [], [], json_encode([
+        $client->jsonRequest('POST', '/cars', [
             'make' => 'Peugeot',
             'model' => 'e-208',
             'buildDate' => '2019-05-01',
-            'colour' => [
-                'id' => 1
-            ],
-        ]));
+            'colourId' => 1,
+        ]);
         $this->assertResponseStatusCodeSame(422);
 
         // Test happy path creating car
         $today = new \DateTimeImmutable();
-        $client->xmlHttpRequest('POST', '/cars', [], [], [], json_encode([
+        $client->jsonRequest('POST', '/cars', [
             'make' => 'Peugeot',
             'model' => 'e-208',
-            'buildDate' => $today->format('Y/m/d'),
-            'colour' => [
-                'id' => 1
-            ],
-        ]));
+            'buildDate' => $today->format('Y-m-d'),
+            'colourId' => 1,
+        ]);
         $this->assertResponseStatusCodeSame(201);
     }
 
@@ -107,11 +92,11 @@ class CarTest extends WebTestCase
         $client = static::createClient();
 
         // Test car not found
-        $client->xmlHttpRequest('GET', '/car/4');
+        $client->jsonRequest('GET', '/car/4');
         $this->assertResponseStatusCodeSame(404);
 
         // Test happy path
-        $client->xmlHttpRequest('GET', '/car/1');
+        $client->jsonRequest('GET', '/car/1');
         $this->assertResponseStatusCodeSame(200);
     }
 
@@ -120,7 +105,7 @@ class CarTest extends WebTestCase
         $client = static::createClient();
 
         // Test 200 response code and that response returns 2 cars
-        $client->xmlHttpRequest('GET', '/cars');
+        $client->jsonRequest('GET', '/cars');
         $this->assertResponseStatusCodeSame(200);
         $content = json_decode($client->getResponse()->getContent());
         $this->assertCount(2, $content);
@@ -131,11 +116,11 @@ class CarTest extends WebTestCase
         $client = static::createClient();
 
         // Test car not found
-        $client->xmlHttpRequest('DELETE', '/cars/3');
+        $client->jsonRequest('DELETE', '/cars/3');
         $this->assertResponseStatusCodeSame(404);
 
         // Test happy path
-        $client->xmlHttpRequest('DELETE', '/cars/1');
+        $client->jsonRequest('DELETE', '/cars/1');
         $this->assertResponseStatusCodeSame(200);
     }
 
