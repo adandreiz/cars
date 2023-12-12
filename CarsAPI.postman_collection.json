@@ -33,7 +33,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"make\": \"Renaul\",\n    \"model\": \"Megane\",\n    \"colour\": {\n        \"id\": 2\n    },\n    \"buildDate\": \"2022/07/01\"\n}\n",
+					"raw": "{\n    \"make\": \"ReneaulFFW\",\n    \"model\": \"ffff\",\n    \"buildDate\": \"2022-01-28\",\n    \"colourId\": 2\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
