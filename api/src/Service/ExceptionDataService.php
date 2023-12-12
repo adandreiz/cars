@@ -21,8 +21,18 @@ class ExceptionDataService
 
     public function toArray(): array
     {
+        preg_match_all('/Object\(App\\\\(?:Dto|Entity)\\\\(\w+)\)\.(\w+):\n\s+(.*?) \(/', $this->message, $matches, PREG_SET_ORDER);
+        if (count($matches)) {
+            foreach ($matches as $match) {
+                $msg[] = sprintf('%s: %s', $match[2], $match[3]);
+            }
+            $msg = implode("\n",$msg);
+        } else {
+            $msg = $this->message;
+        }
+
         return [
-            'message' => $this->message
+            'message' => $msg
         ];
     }
 }

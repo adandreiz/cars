@@ -7,6 +7,7 @@ use App\Service\ExceptionDataService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ExceptionListener
 {
@@ -16,6 +17,9 @@ class ExceptionListener
 
         if ($exception instanceof ExceptionService) {
             $exceptionData = $exception->getExceptionData();
+        } elseif ($exception instanceof HttpException) {
+            $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
+            $exceptionData = new ExceptionDataService($statusCode, $exception->getPrevious()->getMessage());
         } else {
             $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
             $exceptionData = new ExceptionDataService($statusCode, $exception->getMessage());

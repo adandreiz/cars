@@ -16,6 +16,7 @@ class CarTest extends WebTestCase
             'colourId' => 1,
             'buildDate' => '2022-02-12']);
         $this->assertResponseStatusCodeSame(422);
+        $this->assertMatchesRegularExpression('/Colour not found/', $client->getResponse()->getContent());
 
         // Test can't create car without make
         $client->jsonRequest('POST', '/cars', [
@@ -66,6 +67,7 @@ class CarTest extends WebTestCase
             'colourId' => 13,
         ]);
         $this->assertResponseStatusCodeSame(422);
+        $this->assertMatchesRegularExpression('/Colour not found/', $client->getResponse()->getContent());
 
         // Test can't create car older than 4 years
         $client->jsonRequest('POST', '/cars', [
@@ -75,6 +77,8 @@ class CarTest extends WebTestCase
             'colourId' => 1,
         ]);
         $this->assertResponseStatusCodeSame(422);
+        $this->assertMatchesRegularExpression('/buildDate: This value should be greater than or equal/', $client->getResponse()->getContent());
+
 
         // Test happy path creating car
         $today = new \DateTimeImmutable();
