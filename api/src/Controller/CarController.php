@@ -3,13 +3,10 @@
 namespace App\Controller;
 
 use App\Dto\CarDTO;
-use App\Entity\Car;
 use App\Repository\CarRepository;
 use App\Service\CarService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 
