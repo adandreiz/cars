@@ -10,13 +10,6 @@ class CarTest extends WebTestCase
     {
         $client = static::createClient();
 
-        // Test body error request
-        $client->jsonRequest('POST', '/cars',[
-            'model' => 'Civic',
-            'colourId' => 1,
-            'buildDate' => '2022-02-12']);
-        $this->assertResponseStatusCodeSame(422);
-
         // Test can't create car without make
         $client->jsonRequest('POST', '/cars', [
             'model' => 'Civic',
@@ -24,14 +17,17 @@ class CarTest extends WebTestCase
             'buildDate' => '2022-02-12'
         ]);
         $this->assertResponseStatusCodeSame(422);
+        $this->assertMatchesRegularExpression('/make: This value should not be null/', $client->getResponse()->getContent());
 
-        // Test can't create car without model
+        // Test can't create car with null model, validation on entity
         $client->jsonRequest('POST', '/cars', [
             'make' => 'Honda',
+            'model' => '',
             'colourId' => 1,
             'buildDate' => '2022-02-12'
         ]);
         $this->assertResponseStatusCodeSame(422);
+        $this->assertMatchesRegularExpression('/model: This value should not be blank/', $client->getResponse()->getContent());
 
         // Test can't create car without colour
         $client->jsonRequest('POST', '/cars', [
@@ -40,6 +36,7 @@ class CarTest extends WebTestCase
             'buildDate' => '2022-02-12'
         ]);
         $this->assertResponseStatusCodeSame(422);
+        $this->assertMatchesRegularExpression('/colourId: This value should not be null/', $client->getResponse()->getContent());
 
         // Test can't create car without buildDate
         $client->jsonRequest('POST', '/cars', [
@@ -47,6 +44,17 @@ class CarTest extends WebTestCase
             'model' => 'Civic',
             'colourId' => 1
         ]);
+        $this->assertMatchesRegularExpression('/buildDate: This value should not be null/', $client->getResponse()->getContent());
+        $this->assertResponseStatusCodeSame(422);
+
+        // Test incorrect date format
+        $client->jsonRequest('POST', '/cars', [
+            'make' => 'Honda',
+            'model' => 'Civic',
+            'buildDate' => '20-05-2001',
+            'colourId' => 1
+        ]);
+        $this->assertMatchesRegularExpression('/buildDate: This value is not a valid date/', $client->getResponse()->getContent());
         $this->assertResponseStatusCodeSame(422);
 
         // Test can't create car which already exists
@@ -66,6 +74,7 @@ class CarTest extends WebTestCase
             'colourId' => 13,
         ]);
         $this->assertResponseStatusCodeSame(422);
+        $this->assertMatchesRegularExpression('/Colour not found/', $client->getResponse()->getContent());
 
         // Test can't create car older than 4 years
         $client->jsonRequest('POST', '/cars', [
@@ -75,6 +84,8 @@ class CarTest extends WebTestCase
             'colourId' => 1,
         ]);
         $this->assertResponseStatusCodeSame(422);
+        $this->assertMatchesRegularExpression('/buildDate: This value should be greater than or equal/', $client->getResponse()->getContent());
+
 
         // Test happy path creating car
         $today = new \DateTimeImmutable();
