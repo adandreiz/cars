@@ -18,8 +18,7 @@ class ExceptionListener
         if ($exception instanceof ExceptionService) {
             $exceptionData = $exception->getExceptionData();
         } elseif ($exception instanceof HttpException) {
-            $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
-            $exceptionData = new ExceptionDataService($statusCode, $exception->getPrevious()->getMessage());
+            $exceptionData = new ExceptionDataService($exception->getCode(), $exception->getPrevious()->getMessage());
         } else {
             $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
             $exceptionData = new ExceptionDataService($statusCode, $exception->getMessage());
