@@ -9,6 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -46,7 +47,7 @@ class CarService
                     AbstractNormalizer::OBJECT_TO_POPULATE => $car
                 ]
             );
-        } catch (\Exception $e) {
+        } catch (ExceptionInterface $e) {
             $exceptionData = new ExceptionDataService(
                 JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
                 $e->getMessage()

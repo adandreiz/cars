@@ -29,7 +29,16 @@ class CarDenormalizer implements DenormalizerInterface, DenormalizerAwareInterfa
     public function denormalize(mixed $data, string $type, string $format = null, array $context = []): mixed
     {
         try {
-            $colour = $this->colourRepository->findOrFail($data['colour']['id']);
+            // Check for keys
+            if (isset($data['colour']) && isset($data['colour']['id'])) {
+                $colour = $this->colourRepository->findOrFail($data['colour']['id']);
+            } else {
+                $exceptionData = new ExceptionDataService(
+                    JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+                    'Please provide a colour'
+                );
+                throw new ExceptionService($exceptionData);
+            }
         } catch (ExceptionService $exceptionData) {
             $exceptionData = new ExceptionDataService(
                 JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
