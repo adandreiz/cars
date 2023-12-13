@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Dto\CarDTO;
@@ -24,7 +26,7 @@ class CarService
 
     public function createCar(CarDTO $dto): Car
     {
-        $car = new Car();
+        // Get the colour or throw exception, at this point DTO passed validation.
         try {
             $colour = $this->doctrine->getRepository(Colour::class)->findOrFail($dto->colourId);
         } catch (ExceptionService $exceptionData) {
@@ -35,6 +37,7 @@ class CarService
             throw new ExceptionService($exceptionData);
         }
 
+        $car = new Car();
         $car->setBuildDate(new \DateTimeImmutable($dto->buildDate))
             ->setModel($dto->model)
             ->setMake($dto->make)
